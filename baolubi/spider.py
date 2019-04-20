@@ -84,7 +84,7 @@ def get_allCollege():
 def store_allCollege_baolubi():
     get_34college()
     get_allCollege()
-    cur.execute('select link,schoolname from information where id > 860')
+    cur.execute('select link,schoolname from information')
     items3 = cur.fetchall()
     # 拿到每个大学第一个报录比信息页面的地址
     for item in items3:
