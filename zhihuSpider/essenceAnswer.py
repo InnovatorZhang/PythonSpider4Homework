@@ -25,6 +25,7 @@ def createTables():
         id int unsigned primary key auto_increment,
         title text not null,
         author text,
+        avatar text,
         article mediumtext
         )default charset=utf8mb4;
         ''')
@@ -43,7 +44,7 @@ def get_start_url():
 
 
 #保存数据,目前就只保存这这三个数据，数据多了难的搞
-def save_answer(content,name,title):
+def save_answer(content,name,title,avatar):
     #因为content是html的形式，所以要用pyquery解析一下
     doc = pq(content)
     #将<字符替换掉不然小程序显示会有问题
@@ -52,7 +53,7 @@ def save_answer(content,name,title):
     title = title.replace('/','').replace('?','')
 
     try:
-        cur.execute("insert into essenceanswer(title,author,article) values ('{}','{}','{}');".format(title,name,article))
+        cur.execute("insert into essenceanswer(title,author,article,avatar) values ('{}','{}','{}','{}');".format(title,name,article,avatar))
         conn.commit()
     except Exception as e:
         print('wrong!!!')
@@ -71,7 +72,7 @@ def search_answer(data):
         if item.get('target'):
             temp = item.get('target')
             if temp.get('type') == 'answer':
-                save_answer(temp.get('content'),temp['author']['name'],temp['question']['title'])
+                save_answer(temp.get('content'),temp['author']['name'],temp['question']['title'],temp['author']['avatar_url'])
 
 
 #获取json格式数据
